@@ -13,20 +13,6 @@ def nettoyer_texte(texte: str) -> str:
     return texte.lower()
 
 
-corpus = "Corpus.XML"
-doc_id = 0
-for ligne in corpus:
-    if "fichier" in ligne:
-        doc_id = ligne[9:14]
-    if "texte" in ligne:
-        texte = str(ligne)
-        texte = texte.remove("<texte>")
-        texte = texte.remove("</texte>")
-        texte_propre = nettoyer_texte(texte)
-        mots = texte_propre.split()
-        for mot in mots:
-            print(mot, "\t", doc_id, "\n")
-
 
 def segmente(fichier, output):
     with open(output, "a", encoding="utf-8") as f_w:
