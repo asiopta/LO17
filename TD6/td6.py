@@ -371,7 +371,6 @@ def traiter_requete(requete):
         "titre": None,
         "operateurs_titre": None,
         "images": None,
-
     }
     # Extraction des mots-clés
     requete, resultats["return"] = identifie_return(requete, mots_cles_requete)
