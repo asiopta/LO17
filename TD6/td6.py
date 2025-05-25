@@ -363,11 +363,15 @@ def traiter_requete(requete):
     # Structure pour stocker les composants de la requête
     resultats = {
         "return": None,
-        "mots_cles": None,
+        "mots_cles": {"yes": [], "no": None},
+        "operateurs_mots_cles": None,
         "rubrique": None,
+        "operateurs_rubrique"
         "dates": {"debut": None, "fin": None, "précis": None, "not": None},
         "titre": None,
-        "images": None
+        "operateurs_titre": None,
+        "images": None,
+
     }
     # Extraction des mots-clés
     requete, resultats["return"] = identifie_return(requete, mots_cles_requete)
