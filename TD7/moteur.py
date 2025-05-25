@@ -95,6 +95,21 @@ def compare_dates(date_doc, date_requete):
 
     return res
 
+'''
+    resultats = {
+        "return": None,
+        "mots_cles": {"yes": [], "no": None},
+        "operateurs_mots_cles": None,
+        "rubrique": None,
+        "operateurs_rubrique": None,
+        "dates": {"debut": None, "fin": None, "précis": None, "not": None},
+        "titre": None,
+        "operateurs_titre": None,
+        "images": None
+    }
+
+'''
+
 # ---------------------------------------------------------------
 # Recherche les documents pertinents pour une requête donnée
 # ---------------------------------------------------------------
@@ -148,7 +163,7 @@ def recherche_documents(resultats, index_inverse_texte, index_inverse_date, inde
                 dict_match_rubrique[rubrique] = docs_matchs[0]
             else:
                 print(f"⚠️ Rubrique introuvable : {rubrique}")
-        if resultats["operateurs_titre"] == "ou":
+        if resultats["operateurs_rubrique"] == "ou":
             docs_rub = list(set.union(*(set(ast.literal_eval(l)) for l in dict_match_rubrique.values())))
         else:
             docs_rub = list(set.intersection(*(set(ast.literal_eval(l)) for l in dict_match_rubrique.values())))
@@ -160,7 +175,7 @@ def recherche_documents(resultats, index_inverse_texte, index_inverse_date, inde
     if image is not None:
         index_image = pd.read_csv(index_inverse_image, sep='\t')
         docs_match_image = index_image.loc[index_image["mot"] == "yes", "docs"].values[0]
-        docs_cherches = docs_cherches if docs_cherches else docs_match_image
+        docs_cherches = docs_cherches if docs_cherches else ast.literal_eval(docs_match_image)
         docs_cherches = list(set(docs_cherches) & set(ast.literal_eval(docs_match_image)))
 
     # 5️⃣ Partie date
