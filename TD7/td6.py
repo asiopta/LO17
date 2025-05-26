@@ -83,6 +83,8 @@ mots_cles_titre = [
         "est", "contient", "évoque", "traite"
     ]
 
+trash_titres = ['"', " "]
+
 def identifie_titres(requete, mots_cles_titre):
     if "titre" not in requete:
         return requete, None, None  # "titre" absent
@@ -131,7 +133,10 @@ def identifie_titres(requete, mots_cles_titre):
  
     requete_reste = requete[:start_index - len("titre ")] + requete[min_index + len(sous_texte):]
     requete_reste = requete_reste.replace("dont", "").replace("dont", "")
-    
+    for trash in trash_titres:
+        while trash in resultat:
+            resultat = resultat.replace(trash, "")
+
     return requete_reste, resultat, op_titre
 
 
@@ -366,7 +371,7 @@ def traiter_requete(requete):
         "mots_cles": {"yes": [], "no": None},
         "operateurs_mots_cles": None,
         "rubrique": None,
-        "operateurs_rubrique"
+        "operateurs_rubrique": None,
         "dates": {"debut": None, "fin": None, "précis": None, "not": None},
         "titre": None,
         "operateurs_titre": None,
