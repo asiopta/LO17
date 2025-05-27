@@ -1,4 +1,4 @@
-from TD7 import *
+from td7 import *
 import time
 import pandas as pd
 
