@@ -355,7 +355,7 @@ def identifie_mots_cles(requete, mots_cles_articles):
             if sous_text[i] != " " and sous_text[i] != "\n" and sous_text[i] != "" and sous_text[i] != "  ":
                 resultat["yes"].append(sous_text[i])
     else:
-        resultat["yes"].append(requete.replace(" et", "").replace("»", "").replace("«", "").replace(" ",""))
+        resultat["yes"].append(requete.replace(" et", "").replace("»", "").replace("«", ""))
 
     # Cas : on veut aplatir la liste après avoir split les mots contenant des espaces
     new_result = []

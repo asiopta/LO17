@@ -300,50 +300,54 @@ def recherche_documents(resultats, index_inverse_texte, index_inverse_date, inde
 from td5 import *
 from td6 import *
 
-if __name__ == "__main__":
-    ########################################################
-    # Étape 1 : Saisie de la requête utilisateur
-    ########################################################
-    requete = input("Entrez votre requête en langage naturel : ")
-    print("Requête initiale :", requete)
-    print("---------------------------------------------")
+index_inverse_texte = "../TD4/reverse_index_texte.csv"
+index_inverse_date = "../TD4/reverse_index_date.csv"
+index_inverse_rubrique = "../TD4/reverse_index_rubrique.csv"
+index_inverse_titre = "../TD4/reverse_index_titre.csv"
+index_inverse_image = "../TD4/reverse_index_image.csv"
+lemmes_path = "lemmes_lower.csv"  # Chemin du fichier de lemmes
 
-    ########################################################
-    # Étape 2 : Traitement de la requête (analyse syntaxique)
-    ########################################################
+def traiter_et_rechercher(requete):
+    """
+    Traite une requête en langage naturel : analyse, correction orthographique,
+    puis recherche des documents pertinents.
+    
+    Args:
+        requete (str): La requête en langage naturel saisie par l'utilisateur.
+    
+    Returns:
+        list: Liste des documents pertinents trouvés.
+    """
+    print("\n########################################################")
+    print("Requête initiale :", requete)
+    print("########################################################\n")
+
+    # 1. Traitement initial de la requête
     resultat = traiter_requete(requete)
 
-    ########################################################
-    # Étape 3 : Correction orthographique des mots-clés
-    ########################################################
-    lemmes_path = "lemmes_lower.csv"
-
-    # Correction pour les mots-clés exclus ("no")
+    # 2. Correction orthographique des mots-clés exclus ("no")
     if resultat["mots_cles"]["no"] is not None:
         print("Mot à corriger (exclu) :", resultat["mots_cles"]["no"])
-        resultat["mots_cles"]["no"] = correction_orthographique(resultat["mots_cles"]["no"], lemmes_path)
+        resultat["mots_cles"]["no"] = correction_orthographique(
+            resultat["mots_cles"]["no"],
+            lemmes_path
+        )
 
-    # Correction pour les mots-clés inclus ("yes")
+    # 3. Correction orthographique des mots-clés inclus ("yes")
     for i in range(len(resultat["mots_cles"]["yes"])):
-        print("Mot à corriger (inclus) :", resultat["mots_cles"]["yes"][i])
-        resultat["mots_cles"]["yes"][i] = correction_orthographique(resultat["mots_cles"]["yes"][i], lemmes_path)
+        mot = resultat["mots_cles"]["yes"][i]
+        print("Mot à corriger (inclus) :", mot)
+        resultat["mots_cles"]["yes"][i] = correction_orthographique(
+            mot,
+            lemmes_path
+        )
 
-    print("Requête corrigée :")
+    # Affichage de la requête corrigée
+    print("\nRequête corrigée :")
     print(resultat)
-    print("-------------------------------------------")
+    print("--------------------------------------------------------\n")
 
-    ########################################################
-    # Étape 4 : Chemins des index inversés
-    ########################################################
-    index_inverse_texte = "../TD4/reverse_index_texte.csv"
-    index_inverse_date = "../TD4/reverse_index_date.csv"
-    index_inverse_rubrique = "../TD4/reverse_index_rubrique.csv"
-    index_inverse_titre = "../TD4/reverse_index_titre.csv"
-    index_inverse_image = "../TD4/reverse_index_image.csv"
-
-    ########################################################
-    # Étape 5 : Recherche des documents pertinents
-    ########################################################
+    # 4. Recherche des documents pertinents à partir des index inversés
     documents = recherche_documents(
         resultat,
         index_inverse_texte,
@@ -353,8 +357,9 @@ if __name__ == "__main__":
         index_inverse_image
     )
 
-    ########################################################
-    # Étape 6 : Résultat final
-    ########################################################
+    # 5. Affichage final des résultats
     print("\nDocuments trouvés :")
     print(documents)
+    
+    return documents
+
