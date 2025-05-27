@@ -204,7 +204,7 @@ def create_reverse_index_rubrique(corpus, output_rubrique):
     with open(output_rubrique, "w", encoding="utf-8") as f_w:
         f_w.write("mot\tdocs\n")
         for key, tab in index.items():
-            f_w.write(key.lower() + "\t" + str(tab) + "\n")
+            f_w.write(key.lower().strip() + "\t" + str(tab) + "\n")
 
 create_reverse_index_rubrique("corpus_post_lems.XML", "reverse_index_rubrique.csv")
 

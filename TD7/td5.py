@@ -100,7 +100,10 @@ def lemmatize_corpus(lemmes_path):
 
 def correction_orthographique(mot, lemmes_path):
     lemmes = pd.read_csv(lemmes_path, sep="\t")
-    mot = mot.lower()
+    mot = mot.lower().strip()
+    if mot in "  \n\t":
+        return None
+    
     if mot in lemmes["mot"].values:
             lemme = lemmes.loc[lemmes["mot"] == mot, "lemme"].values[0]
     else: 

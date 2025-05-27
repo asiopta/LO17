@@ -357,6 +357,17 @@ def identifie_mots_cles(requete, mots_cles_articles):
     else:
         resultat["yes"].append(requete.replace(" et", "").replace("»", "").replace("«", "").replace(" ",""))
 
+    # Cas : on veut aplatir la liste après avoir split les mots contenant des espaces
+    new_result = []
+
+    for res in resultat["yes"]:
+        if " " in res:
+            new_result.extend(res.split())  # Ajoute les sous-mots directement à la liste finale
+        else:
+            new_result.append(res)  # Ajoute le mot inchangé
+
+    resultat["yes"] = new_result  # Remplace la liste par la version aplanie
+
     return resultat, op_mots_cles
 
 #----------------Fonction qui regroupe tout----------------------

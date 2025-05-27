@@ -113,7 +113,7 @@ def correction_orthographique(mot, lemmes_path):
     lemmes = pd.read_csv(lemmes_path, sep="\t")
     mot = mot.lower()
     if mot in lemmes["mot"].values:
-        lemme = lemmes.loc[lemmes["mot"] == mot, "lemme"].values[0]
+        lemme = lemmes.loc[lemmes["mot"].str.strip() == mot.strip(), "lemme"].values[0]
     else:
         mots_candidats = [lemme for lemme in lemmes["mot"] if recherche_proximite(mot, lemme) != 0]
         if not mots_candidats:
@@ -122,4 +122,6 @@ def correction_orthographique(mot, lemmes_path):
         else:
             mot_result = levenshtein(mot, mots_candidats)
             lemme = lemmes.loc[lemmes["mot"] == mot_result, "lemme"].values[0]
+    if str(lemme) == "travaux":
+        return mot.lower()
     return str(lemme)
